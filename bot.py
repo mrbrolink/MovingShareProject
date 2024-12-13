@@ -173,7 +173,7 @@ async def main(bot: Client, message: Message):
                 disable_web_page_preview=True
             )
 
-@Bot.on_message(filters.chat(Config.CHANNEL_ID) & ~filters.edited)
+@Bot.on_message(filters.chat(Config.CHANNEL_ID))
 async def auto_broadcast(bot: Client, message: Message):
     try:
         # Log the message detected in the channel
