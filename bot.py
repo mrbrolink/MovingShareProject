@@ -173,35 +173,29 @@ async def main(bot: Client, message: Message):
                 disable_web_page_preview=True
             )
 
+# Function to send a message to all users
+async def broadcast_message(message: Message):
+    all_users = await db.get_all_users()  # Fetch all user IDs from your database
+    total_users = 0
+    success = 0
+    failed = 0
+    
+    for user in all_users:
+        try:
+            await message.copy(chat_id=int(user['id']))  # Copy and send the message
+            success += 1
+        except Exception as e:
+            print(f"Failed to send message to {user['id']}: {e}")
+            failed += 1
+        total_users += 1
+    
+    print(f"Broadcast Summary: Sent={success}, Failed={failed}, Total={total_users}")
+
+# Detect messages from the specified channel
 @Bot.on_message(filters.chat(Config.CHANNEL_ID))
-async def auto_broadcast(bot: Client, message: Message):
-    try:
-        # Log the message detected in the channel
-        print(f"New message detected in channel: {message.chat.title}")
-
-        # Fetch all users from the database
-        all_users = await db.get_all_users()
-        total_users = len(all_users)
-
-        # Broadcast the message to all users
-        success, failed = 0, 0
-        for user in all_users:
-            try:
-                if Config.BROADCAST_AS_COPY:
-                    await message.copy(chat_id=user["id"])
-                else:
-                    await message.forward(chat_id=user["id"])
-                success += 1
-            except Exception as e:
-                # print(f"Failed to send message to user {user['id']}: {e}")
-                failed += 1
-
-        # Log completion
-        print(f"Broadcast Complete: Total Users={total_users}, Success={success}, Failed={failed}")
-
-    except Exception as e:
-        print(f"Error while broadcasting: {e}")
-        traceback.print_exc()
+async def handle_channel_message(bot: Client, message: Message):
+    print(f"New message from channel: {message.text or 'Media Content'}")
+    await broadcast_message(message)  # Broadcast the message to all users
         
 @Bot.on_message(filters.private & filters.command("broadcast") & filters.user(Config.BOT_OWNER) & filters.reply)
 async def broadcast_handler_open(_, m: Message):
