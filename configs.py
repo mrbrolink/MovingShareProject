@@ -53,6 +53,7 @@ class Config(object):
   BOT_USERNAME = os.environ.get("BOT_USERNAME", "SunTvShowsBot")
   LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", "-1002001724354"))
   UPDATES_CHANNEL = os.environ.get("UPDATES_CHANNEL", "-1001728131839")
+  CHANNEL_ID = int(os.environ.get("CHANNEL_ID", "-1002152174616")
 
   #BOT_TOKEN = os.environ.get("BOT_TOKEN", "")
   #BOT_USERNAME = os.environ.get("BOT_USERNAME", "AdultOnly18_Bot")
