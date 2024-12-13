@@ -180,7 +180,7 @@ async def broadcast_message(message: Message):
     success = 0
     failed = 0
     
-    for user in all_users:
+    async for user in all_users:
         try:
             await message.copy(chat_id=int(user['id']))  # Copy and send the message
             success += 1
