@@ -177,7 +177,7 @@ async def main(bot: Client, message: Message):
 async def auto_broadcast(bot: Client, message: Message):
     try:
         # Log the message detected in the channel
-        # print(f"New message detected in channel: {message.chat.title}")
+        print(f"New message detected in channel: {message.chat.title}")
 
         # Fetch all users from the database
         all_users = await db.get_all_users()
@@ -197,10 +197,10 @@ async def auto_broadcast(bot: Client, message: Message):
                 failed += 1
 
         # Log completion
-        # print(f"Broadcast Complete: Total Users={total_users}, Success={success}, Failed={failed}")
+        print(f"Broadcast Complete: Total Users={total_users}, Success={success}, Failed={failed}")
 
     except Exception as e:
-        # print(f"Error while broadcasting: {e}")
+        print(f"Error while broadcasting: {e}")
         traceback.print_exc()
         
 @Bot.on_message(filters.private & filters.command("broadcast") & filters.user(Config.BOT_OWNER) & filters.reply)
