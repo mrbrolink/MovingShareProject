@@ -25,7 +25,7 @@ from pyrogram.types import (
 from configs import Config
 from handlers.database import db
 from handlers.add_user_to_db import add_user_to_database
-from handlers.send_file import send_media_and_reply
+from handlers.send_file import send_media_and_reply, delete_after_delay
 from handlers.helpers import b64_to_str, str_to_b64
 from handlers.check_user_status import handle_user_status
 from handlers.force_sub_handler import (
@@ -196,6 +196,11 @@ async def broadcast_message(message: Message):
 async def handle_channel_message(bot: Client, message: Message):
     print(f"New message from channel: {message.text or 'Media Content'}")
     await broadcast_message(message)  # Broadcast the message to all users
+    asyncio.create_task(delete_after_delay(message, 60))
+
+async def delete_after_delay(message, delay):
+    await asyncio.sleep(delay)
+    await message.delete()
         
 @Bot.on_message(filters.private & filters.command("broadcast") & filters.user(Config.BOT_OWNER) & filters.reply)
 async def broadcast_handler_open(_, m: Message):
