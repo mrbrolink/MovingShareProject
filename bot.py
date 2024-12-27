@@ -196,7 +196,7 @@ async def main(bot: Client, message: Message):
             )
 
 # Function to send a message to all users
-""" async def broadcast_message(bot: Client, message: Message):
+async def broadcast_message(bot: Client, message: Message):
     all_users = await db.get_all_users()  # Fetch all user IDs from your database
     total_users = 0
     success = 0
@@ -220,11 +220,11 @@ async def main(bot: Client, message: Message):
 
 async def schedule_deletion(bot: Client, messages: list, delay: int):
     
-    Schedules deletion of messages after a given delay.
+  """  Schedules deletion of messages after a given delay.
     Args:
         bot (Client): The bot instance.
         messages (list): List of tuples containing user_id and message_id.
-        delay (int): Delay in seconds before deletion.
+        delay (int): Delay in seconds before deletion. """
    
     await asyncio.sleep(delay)  # Wait for the specified delay
 
@@ -234,13 +234,13 @@ async def schedule_deletion(bot: Client, messages: list, delay: int):
             print(f"Deleted message {msg_id} for user {user_id}")
         except Exception as e:
             print(f"Failed to delete message {msg_id} for user {user_id}: {e}")
-"""
+
 # Detect messages from the specified channel
 @Bot.on_message(filters.chat(Config.CHANNEL_ID))
 async def handle_channel_message(bot: Client, message: Message):
-    await main_broadcast_handler(message, db)
-   # print(f"New message from channel: {message.text or 'Media Content'}")
-   # await broadcast_message(bot, message)  # Broadcast the message to all users
+    #await main_broadcast_handler(message, db)
+   print(f"New message from channel: {message.text or 'Media Content'}")
+   await broadcast_message(bot, message)  # Broadcast the message to all users
         
 @Bot.on_message(filters.private & filters.command("broadcast") & filters.user(Config.BOT_OWNER) & filters.reply)
 async def broadcast_handler_open(_, m: Message):
