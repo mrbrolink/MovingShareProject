@@ -66,12 +66,25 @@ async def forward_to_channel(bot: Client, message: Message, editable: Message):
 async def save_batch_media_in_channel(bot: Client, editable: Message, message_ids: list):
     try:
         message_ids_str = ""
+        file_sizes = []
         for message in (await bot.get_messages(chat_id=editable.chat.id, message_ids=message_ids)):
             sent_message = await forward_to_channel(bot, message, editable)
             if sent_message is None:
                 continue
+            # Check if the message contains a file and retrieve the size
+            file_size = None
+            if message.document:
+                file_size = message.document.file_size
+            elif message.video:
+                file_size = message.video.file_size
+            elif message.audio:
+                file_size = message.audio.file_size
+            
+            if file_size is not None:
+                file_sizes.append(humanbytes(file_size))
             message_ids_str += f"{str(sent_message.id)} "
             await asyncio.sleep(2)
+        file_sizes.sort()
         SaveMessage = await bot.send_message(
             chat_id=Config.DB_CHANNEL,
             text=message_ids_str,
