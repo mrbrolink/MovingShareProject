@@ -239,12 +239,7 @@ async def schedule_deletion(bot: Client, messages: list, delay: int):
 @Bot.on_message(filters.chat(Config.CHANNEL_ID))
 async def handle_channel_message(bot: Client, message: Message):
     print(f"New message from channel: {message.text or 'Media Content'}")
-    await broadcast_message(message)  # Broadcast the message to all users
-    asyncio.create_task(delete_after_delay(message, 60))
-
-async def delete_after_delay(message, delay):
-    await asyncio.sleep(delay)
-    await message.delete()
+    await broadcast_message(bot, message)  # Broadcast the message to all users
         
 @Bot.on_message(filters.private & filters.command("broadcast") & filters.user(Config.BOT_OWNER) & filters.reply)
 async def broadcast_handler_open(_, m: Message):
@@ -278,7 +273,7 @@ async def ban(c: Client, m: Message):
         user_id = int(m.command[1])
         ban_duration = int(m.command[2])
         ban_reason = ' '.join(m.command[3:])
-        ban_log_text = f"Banning user {user_id} for {ban_duration} days for the reason {ban_reason}."
+        ban_log_text =f"Banning user {user_id} for {ban_duration} days for the reason {ban_reason}."
         try:
             await c.send_message(
                 user_id,
