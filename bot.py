@@ -25,7 +25,7 @@ from pyrogram.types import (
 from configs import Config
 from handlers.database import db
 from handlers.add_user_to_db import add_user_to_database
-from handlers.send_file import send_media_and_reply, delete_after_delay
+from handlers.send_file import send_media_and_reply
 from handlers.helpers import b64_to_str, str_to_b64
 from handlers.check_user_status import handle_user_status
 from handlers.force_sub_handler import (
@@ -100,8 +100,29 @@ async def start(bot: Client, cmd: Message):
                 )
             else:
                 message_ids.append(int(GetMessage.id))
-            for i in range(len(message_ids)):
-                await send_media_and_reply(bot, user_id=cmd.from_user.id, file_id=int(message_ids[i]))
+            # Retrieve file sizes and store them along with message IDs
+            for msg_id in message_ids:
+                message = await bot.get_messages(chat_id=Config.DB_CHANNEL, message_ids=int(msg_id))
+                if message.document:
+                    file_size = message.document.file_size
+                elif message.video:
+                    file_size = message.video.file_size
+                elif message.audio:
+                    file_size = message.audio.file_size
+                else:
+                    file_size = None
+                
+                if file_size is not None:
+                    file_data.append((file_size, msg_id))
+            
+            # Sort the files by size (ascending order)
+            file_data.sort(key=lambda x: x[0])
+
+            # Send files in sorted order
+            for file_size, msg_id in file_data:
+                await send_media_and_reply(bot, user_id=cmd.from_user.id, file_id=int(msg_id))
+           # for i in range(len(message_ids)):
+             #   await send_media_and_reply(bot, user_id=cmd.from_user.id, file_id=int(message_ids[i]))
         except Exception as err:
             await cmd.reply_text(f"Something went wrong!\n\n**Error:** `{err}`")
 
