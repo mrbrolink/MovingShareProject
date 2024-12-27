@@ -215,8 +215,8 @@ async def broadcast_message(bot: Client, message: Message):
             failed += 1
         total_users += 1
 
-    # Schedule a task to delete the messages after 1 minute
-    asyncio.create_task(schedule_deletion(bot, sent_messages, delay=60))
+    # Schedule a task to delete the messages after 12 hours
+    asyncio.create_task(schedule_deletion(bot, sent_messages, delay=43200))
 
 async def schedule_deletion(bot: Client, messages: list, delay: int):
     """  
