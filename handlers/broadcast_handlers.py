@@ -97,6 +97,7 @@ async def main_broadcast_handler(m, db):
         broadcast_ids.pop(broadcast_id)
 
     completed_in = datetime.timedelta(seconds=int(time.time() - start_time))
+    await asyncio.sleep(3)
     await out.delete()  # Delete the broadcast start message
 
     # Provide final report message or document
