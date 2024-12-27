@@ -219,13 +219,13 @@ async def broadcast_message(bot: Client, message: Message):
     asyncio.create_task(schedule_deletion(bot, sent_messages, delay=60))
 
 async def schedule_deletion(bot: Client, messages: list, delay: int):
-    
-  """  Schedules deletion of messages after a given delay.
+    """  
+    Schedules deletion of messages after a given delay.
     Args:
         bot (Client): The bot instance.
         messages (list): List of tuples containing user_id and message_id.
-        delay (int): Delay in seconds before deletion. """
-   
+        delay (int): Delay in seconds before deletion. 
+    """
     await asyncio.sleep(delay)  # Wait for the specified delay
 
     for user_id, msg_id in messages:
