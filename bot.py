@@ -196,22 +196,44 @@ async def main(bot: Client, message: Message):
             )
 
 # Function to send a message to all users
-async def broadcast_message(message: Message):
+async def broadcast_message(bot: Client, message: Message):
     all_users = await db.get_all_users()  # Fetch all user IDs from your database
     total_users = 0
     success = 0
     failed = 0
     
+    # Store the message IDs and user IDs for deletion
+    sent_messages = []
+
     async for user in all_users:
         try:
-            await message.copy(chat_id=int(user['id']))  # Copy and send the message
+            sent_message = await message.copy(chat_id=int(user['id']))  # Copy and send the message
+            sent_messages.append((user['id'], sent_message.id))  # Store user ID and message ID
             success += 1
         except Exception as e:
             print(f"Failed to send message to {user['id']}: {e}")
             failed += 1
         total_users += 1
-    
-    print(f"Broadcast Summary: Sent={success}, Failed={failed}, Total={total_users}")
+
+    # Schedule a task to delete the messages after 1 minute
+    asyncio.create_task(schedule_deletion(bot, sent_messages, delay=60))
+
+async def schedule_deletion(bot: Client, messages: list, delay: int):
+    """
+    Schedules deletion of messages after a given delay.
+    Args:
+        bot (Client): The bot instance.
+        messages (list): List of tuples containing user_id and message_id.
+        delay (int): Delay in seconds before deletion.
+    """
+    await asyncio.sleep(delay)  # Wait for the specified delay
+
+    for user_id, msg_id in messages:
+        try:
+            await bot.delete_messages(chat_id=user_id, message_ids=msg_id)
+            print(f"Deleted message {msg_id} for user {user_id}")
+        except Exception as e:
+            print(f"Failed to delete message {msg_id} for user {user_id}: {e}")
 
 # Detect messages from the specified channel
 @Bot.on_message(filters.chat(Config.CHANNEL_ID))
