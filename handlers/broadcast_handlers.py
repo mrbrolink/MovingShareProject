@@ -40,6 +40,7 @@ async def send_msg(user_id, message):
 async def main_broadcast_handler(m, db):
     all_users = await db.get_all_users()
     broadcast_msg = m.reply_to_message
+    message_ids_to_delete = []
     while True:
         broadcast_id = ''.join([random.choice(string.ascii_letters) for i in range(3)])
         if not broadcast_ids.get(broadcast_id):
