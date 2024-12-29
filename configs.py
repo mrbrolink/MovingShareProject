@@ -12,7 +12,7 @@ class Config(object):
   
   SHORTLINK_URL = os.environ.get('SHORTLINK_URL', "seturl.in")
   SHORTLINK_API = os.environ.get('SHORTLINK_API', "7ac7e29a491f15f0360e0cbe38a24490501c02e0")
-  BOT_OWNER = int(os.environ.get("BOT_OWNER", "807374433"))
+  BOT_OWNER = int(os.environ.get("BOT_OWNER", "1835209636"))
   DATABASE_URL = os.environ.get("DATABASE_URL", "mongodb+srv://leecher:leecher@cluster0.606mkpi.mongodb.net/?retryWrites=true&w=majority")
   
   BANNED_USERS = set(int(x) for x in os.environ.get("BANNED_USERS", "").split())
