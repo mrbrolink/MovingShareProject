@@ -11,7 +11,7 @@ from handlers.helpers import str_to_b64
 async def reply_forward(message: Message, file_id: int):
     try:
         await message.reply_text(
-            f"**✅Join Our Main Channel 👇** \n\n **👉 Join - https://t.me/+EQti1KNCQnk5MmY1 ** \n\nFiles will be deleted in 12 hours to avoid copyright issues. Please forward and save them.",
+            f"**✅Join Our Main Channel 👇** \n\n **👉 Join - https://t.me/+aTUe8Y9zUjtiNDEx ** \n\nFiles will be deleted in 12 hours to avoid copyright issues. Please forward and save them.",
             disable_web_page_preview=True,
             quote=True
         )
