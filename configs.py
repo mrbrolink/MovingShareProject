@@ -8,8 +8,9 @@ class Config(object):
   BOT_USERNAME = os.environ.get("BOT_USERNAME", "AdultOnly18_Bot")
   LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", "-1002107895168"))
   UPDATES_CHANNEL = os.environ.get("UPDATES_CHANNEL", "-1002138948839")
-  DB_CHANNEL = int(os.environ.get("DB_CHANNEL", "-1002107895168")) #Adult
+  CHANNEL_ID = int(os.environ.get("CHANNEL_ID", "-1002425969427"))
   
+  DB_CHANNEL = int(os.environ.get("DB_CHANNEL", "-1002107895168")) #Adult
   SHORTLINK_URL = os.environ.get('SHORTLINK_URL', "seturl.in")
   SHORTLINK_API = os.environ.get('SHORTLINK_API', "7ac7e29a491f15f0360e0cbe38a24490501c02e0")
   BOT_OWNER = int(os.environ.get("BOT_OWNER", "1835209636"))
